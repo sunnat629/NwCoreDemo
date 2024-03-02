@@ -21,7 +21,11 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlin.js.ExperimentalJsExport
+import kotlin.js.JsExport
 
+@OptIn(ExperimentalJsExport::class)
+@JsExport
 @Serializable
 data class NwTimeline(
     @SerialName("region")
@@ -32,7 +36,15 @@ data class NwTimeline(
     val time: Long? = null
 )
 
+@OptIn(ExperimentalJsExport::class)
+@JsExport
 object TimelineFetcher {
+
+    fun mohiCheck(): String? {
+        return "fgsdfgsdfgfdsggfdsfdgfdså‚"
+    }
+
+    val sunnat: String = "I am Mohi Us Sunnat"
 
     private var httpClient: HttpClient? = null
 

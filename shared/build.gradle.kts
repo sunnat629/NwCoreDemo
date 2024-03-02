@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
+
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
@@ -30,6 +32,25 @@ kotlin {
         }
     }
 
+    js() {
+        moduleName = "shared"
+        browser {
+            webpackTask {
+            }
+            testTask {
+                useKarma {
+                    useSafari()
+                    useFirefox()
+                    useChrome()
+                    useChromeCanary()
+                    useChromeHeadless()
+                    webpackConfig.cssSupport { enabled.set(true) }
+                }
+            }
+        }
+        binaries.executable()
+    }
+
     sourceSets {
         commonMain.dependencies {
             implementation(libs.kamel.image)
@@ -48,9 +69,13 @@ kotlin {
 
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
-//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-iosx64:1.8.0")
-//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-iosarm64:1.8.0")
-//            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-iossimulatorarm64:1.8.0")
+        }
+
+        jsMain.dependencies {
+            implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.11.0")
+            implementation(kotlin("stdlib-js"))
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.0")
+            implementation(libs.ktor.client.js)
         }
     }
 }
