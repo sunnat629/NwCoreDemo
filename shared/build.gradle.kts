@@ -16,8 +16,6 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
     iosSimulatorArm64()
 
     cocoapods {
@@ -32,10 +30,15 @@ kotlin {
         }
     }
 
-    js() {
+    js(IR) {
         moduleName = "shared"
         browser {
             webpackTask {
+            }
+            useEsModules()
+            commonWebpackConfig {
+                outputFileName = "shared.js"
+                output?.library = "SharedAppModule"
             }
             testTask {
                 useKarma {
@@ -78,6 +81,12 @@ kotlin {
             implementation(libs.ktor.client.js)
         }
     }
+}
+
+tasks.register<Copy>("copyKotlinJsToWeb") {
+    from("$buildDir/processedResources/js/main/")
+    into("src/jsMain/resources")
+    include("*.js")
 }
 
 android {

@@ -3,8 +3,10 @@ package dev.sunnat629.kmm2
 import kotlinx.browser.document
 
 fun main() {
-    TimelineFetcher.startFetchingTimeline { timeline ->
-        updateWebPageWithNewContent(timeline)
+    TimelineFetcher.startFetchingTimeline { nwTimeline ->
+        val timeline = nwTimeline?.time?.let { timestampToHumanReadable(it) }?: throw Exception("NO RESULT")
+
+        updateWebPageWithNewContent("$timeline -- $nwTimeline")
     }
 }
 

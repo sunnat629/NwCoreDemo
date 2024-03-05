@@ -52,7 +52,7 @@ object TimelineFetcher {
         return httpClient?.get("https://time.api.nativewaves.com/")?.body<NwTimeline>()
     }
 
-    private val _timelineFlow = MutableSharedFlow<String>()
+    private val _timelineFlow = MutableSharedFlow<NwTimeline>()
     val timelineFlow = _timelineFlow.asSharedFlow()
     private val scope = CoroutineScope(Dispatchers.Default)
     private var fetchJob: Job? = null
@@ -66,9 +66,9 @@ object TimelineFetcher {
 
 
     // Assuming this is defined in your Kotlin Multiplatform project
-    fun startFetchingTimeline(onUpdate: (String) -> Unit) {
+    fun startFetchingTimeline(onUpdate: (NwTimeline?) -> Unit) {
         val callback = object : TimelineUpdateCallback {
-            override fun onUpdate(timeline: String) {
+            override fun onUpdate(timeline: NwTimeline?) {
                 onUpdate(timeline)
             }
         }
@@ -91,9 +91,8 @@ object TimelineFetcher {
             tickerFlow(5000L).collect { _ ->
                 try {
                     val result = fetchNwTimeline() // Simulate fetching timeline
-                    val timeline = result?.time?.let { timestampToHumanReadable(it) }?: throw Exception("NO RESULT")
-                    _timelineFlow.emit(timeline) // Emit the timeline to the SharedFlow
-                    callback.onUpdate(timeline) // Notify Swift through the callback
+                    result?.let { _timelineFlow.emit(it) } // Emit the timeline to the SharedFlow
+                    callback.onUpdate(result) // Notify Swift through the callback
                 } catch (e: Throwable) {
                     println("Error fetching timeline: ${e.message}")
                 }
@@ -110,7 +109,7 @@ object TimelineFetcher {
 }
 
 interface TimelineUpdateCallback {
-    fun onUpdate(timeline: String)
+    fun onUpdate(timeline: NwTimeline?)
 }
 
 fun timestampToHumanReadable(timestamp: Long): String {
