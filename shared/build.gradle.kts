@@ -65,6 +65,7 @@ kotlin {
 //            api("dev.icerock.moko:mvvm-compose:0.16.1") // api mvvm-core, getViewModel for Compose Multiplatform
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
             implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

@@ -88,7 +88,7 @@ object TimelineFetcher {
 
         fetchJob?.cancel()
         fetchJob = scope.launch {
-            tickerFlow(5000L).collect { _ ->
+            tickerFlow(3000L).collect { _ ->
                 try {
                     val result = fetchNwTimeline() // Simulate fetching timeline
                     result?.let { _timelineFlow.emit(it) } // Emit the timeline to the SharedFlow

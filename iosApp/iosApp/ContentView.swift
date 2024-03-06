@@ -14,11 +14,11 @@ struct ContentView: View {
      }
 
     var body: some View {
-            VStack {
-                Text(viewModel.displayText)
+        VStack(spacing: 20) {
+                Text(viewModel.timeDisplay)
                 
                 HStack {
-                    Button("Start") {
+                    Button("Start Fetching") {
                         viewModel.startFetching()
                     }
                     .padding()
@@ -26,7 +26,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     
-                    Button("Stop") {
+                    Button("Stop Fetching") {
                         viewModel.stopFetching()
                     }
                     .padding()
@@ -34,6 +34,17 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
+                
+                Text(viewModel.manifestDisplay)
+                
+                Button("Fetch Manifest") {
+                    viewModel.startFetchingManifest()
+                }
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
             }
             .padding()
         }

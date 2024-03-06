@@ -12,18 +12,18 @@ import Combine
 import SwiftUI
 
 class TimelineViewModel: ObservableObject {
-    @Published var displayText: String = "Loading..."
+    @Published var timeDisplay: String = "Nw Timeline: Loading..."
+    @Published var manifestDisplay: String = "EXP Name: Loading..."
 
     func startFetching() {
                TimelineFetcher.shared.startFetchingTimeline { timeline in
                    DispatchQueue.main.async {
                        if let timestamp = timeline?.time {
-                           // `timestamp` is not nil here, so we can safely pass it
                            let humanReadable = Utils.shared.timestampToHumanReadable(timestamp: timestamp)
-                           self.displayText = humanReadable + ""
+                           self.timeDisplay = "Nw Timeline: \(humanReadable)"
                        } else {
                            // Handle the nil case, maybe provide a default value or do something else
-                           print("Timestamp is nil")
+                           self.timeDisplay =  "Timestamp is null"
                        }
                    }
                }
@@ -35,15 +35,22 @@ class TimelineViewModel: ObservableObject {
     
     
     func startFetchingManifest() {
-        ExpMane
-               TimelineFetcher.shared.startFetchingTimeline { timeline in
-                   DispatchQueue.main.async {
-                       self.displayText =
-                   }
-               }
-       }
+        ExpManifestFetcher.shared.fetchedManifest(manifestId: "p78x44cv1rrm23lx") { expManifestData in
+            DispatchQueue.main.async {
+                // Process your `expManifestData` here
+                // `expManifestData` is of type `ExpManifestData?`, so you might need to unwrap it
+                if let name = expManifestData?.name {
+                    self.manifestDisplay =  "EXP Name: \(name)"
+                } else {
+                    // Handle the nil case, maybe provide a default value or do something else
+                    self.manifestDisplay =  "expManifestData is null"
+                }
+            }
+        }
+    }
 
     func stopFetchingManifest() {
         TimelineFetcher.shared.stopFetchingTimeline()
+        self.timeDisplay = "Stopped Fetching"
     }
 }

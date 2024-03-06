@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>JS Client</title>
+<html>
+    <head>
+    <title>KMM2</title>
+    <style>
+        /* Simple CSS to center the content */
+        .centered-content {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    </style>
 </head>
-
-<body>
-<b>Nw Timeline</b>
-    <div id="timeline">Loading timeline...</div>
-    <div id="kotlinContent"></div> <!-- Placeholder for displaying content -->
-    <script src="shared.js"></script>
-
-</body>
+    <body>
+    <div class="centered-content">
+        <div id="display1">Display 1</div>
+        <div id="display2">Display 2</div>
+        <button id="button1">Button 1</button>
+        <button id="button2">Button 2</button>
+    </div>
+        <script src="shared.js"></script>
+    </body>
 </html>

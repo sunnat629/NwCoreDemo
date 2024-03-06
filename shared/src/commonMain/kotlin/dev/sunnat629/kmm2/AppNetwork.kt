@@ -1,3 +1,6 @@
+import dev.sunnat629.kmm2.NwTimeline
+import dev.sunnat629.kmm2.TimelineFetcher
+import dev.sunnat629.kmm2.models.ExpManifestData
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.call.*
@@ -7,12 +10,17 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 
 object AppNetwork {
 
     val httpClient: HttpClient = HttpClient {
         install(ContentNegotiation) {
-            json()
+            json(Json {
+                ignoreUnknownKeys = true
+                prettyPrint = true
+                isLenient = true
+            })
         }
     }
 
@@ -20,18 +28,8 @@ object AppNetwork {
         url: String
     ): Result<T> = withContext(Dispatchers.Default) {
         try {
-            val httpResponse: HttpResponse = httpClient.get(url) {
-                // Optional: Configure the request further if needed
-                // e.g., headers, timeout, etc.
-            }
-
-            if (httpResponse.status == HttpStatusCode.OK) {
-                // Use `body` to deserialize directly into the reified type T
-                Result.success(httpResponse.body())
-            } else {
-                // Handle non-successful status codes appropriately
-                Result.failure(RuntimeException("Received non-OK response: ${httpResponse.status}"))
-            }
+            val result = httpClient.get(url).body<T>()
+            Result.success(result)
         } catch (e: Exception) {
             // Handle exceptions such as network errors, serialization issues, etc.
             Result.failure(e)

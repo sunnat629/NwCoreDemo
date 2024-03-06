@@ -4,8 +4,8 @@ import kotlinx.datetime.toLocalDateTime
 
 object Utils {
 
-    fun timestampToHumanReadable(timestamp: Long?): String? {
-        if (timestamp == null) return null
+    fun timestampToHumanReadable(timestamp: Long?): String {
+        if (timestamp == null) return "Timestamp is null"
         // Create an Instant from the timestamp (milliseconds)
         val instant = Instant.fromEpochMilliseconds(timestamp)
 

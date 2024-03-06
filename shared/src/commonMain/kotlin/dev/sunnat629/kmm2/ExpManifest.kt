@@ -2,27 +2,13 @@ package dev.sunnat629.kmm2
 
 import AppNetwork
 import dev.sunnat629.kmm2.models.ExpManifestData
-import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable.isActive
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.cancellable
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
 import kotlin.js.ExperimentalJsExport
 import kotlin.js.JsExport
 
@@ -34,17 +20,27 @@ object ExpManifestFetcher {
     
     private val _expManifest = MutableSharedFlow<ExpManifestData>()
     val expManifest = _expManifest.asSharedFlow()
-    
+
     private suspend fun fetchNwTimeline(url: String): ExpManifestData? {
-        val result = AppNetwork.fetchFromNetwork<ExpManifestData>(url)
-        return result.getOrElse { null }
+        return AppNetwork.httpClient.get(url).body<ExpManifestData?>()
     }
     
+    fun fetchedManifest(manifestId: String, onUpdate: (ExpManifestData?) -> Unit) {
+        val callback = object : ExpManifestCallback {
+            override fun onUpdate(timeline: ExpManifestData?) {
+                onUpdate(timeline)
+            }
+        }
+        startFetching(manifestId, callback)
+    }
+
     private fun startFetching(manifestId: String, callback: ExpManifestCallback) {
         scope.launch {
             val url = "https://showcase-content.cdn.test.nativewaves.com/programs/v2/$manifestId"
-                try {
+            println("url: $url")
+            try {
                     val result = fetchNwTimeline(url) // Simulate fetching timeline
+                    println(result?.toString())
                     result?.let { _expManifest.emit(it) } // Emit the timeline to the SharedFlow
                     callback.onUpdate(result) // Notify Swift through the callback
                 } catch (e: Throwable) {
