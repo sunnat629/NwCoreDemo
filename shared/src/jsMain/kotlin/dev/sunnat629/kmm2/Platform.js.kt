@@ -1,5 +1,6 @@
 package dev.sunnat629.kmm2
 
+import Utils.timestampToHumanReadable
 import kotlinx.browser.document
 
 fun main() {

@@ -35,29 +35,26 @@ object ExpManifestFetcher {
     private val _expManifest = MutableSharedFlow<ExpManifestData>()
     val expManifest = _expManifest.asSharedFlow()
     
-    private suspend fun fetchNwTimeline(manifestId: String): ExpManifestData? {
-        val result = AppNetwork.fetchFromNetwork<ExpManifestData>("https://showcase-content.cdn.test.nativewaves.com/programs/v2/$manifestId")
+    private suspend fun fetchNwTimeline(url: String): ExpManifestData? {
+        val result = AppNetwork.fetchFromNetwork<ExpManifestData>(url)
         return result.getOrElse { null }
     }
     
-    private fun startFetching(callback: TimelineUpdateCallback) {
-        // Cancel any existing job to prevent multiple fetch jobs
-
+    private fun startFetching(manifestId: String, callback: ExpManifestCallback) {
         scope.launch {
-            tickerFlow(5000L).collect { _ ->
+            val url = "https://showcase-content.cdn.test.nativewaves.com/programs/v2/$manifestId"
                 try {
-                    val result = fetchNwTimeline() // Simulate fetching timeline
-                    result?.let { _timelineFlow.emit(it) } // Emit the timeline to the SharedFlow
+                    val result = fetchNwTimeline(url) // Simulate fetching timeline
+                    result?.let { _expManifest.emit(it) } // Emit the timeline to the SharedFlow
                     callback.onUpdate(result) // Notify Swift through the callback
                 } catch (e: Throwable) {
                     println("Error fetching timeline: ${e.message}")
                 }
             }
-        }
     }
     
 }
 
 interface ExpManifestCallback {
-    fun onUpdate(timeline: NwTimeline?)
+    fun onUpdate(timeline: ExpManifestData?)
 }

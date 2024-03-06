@@ -15,15 +15,35 @@ class TimelineViewModel: ObservableObject {
     @Published var displayText: String = "Loading..."
 
     func startFetching() {
-       // Use the adjusted Kotlin function that accepts a Swift closure
                TimelineFetcher.shared.startFetchingTimeline { timeline in
                    DispatchQueue.main.async {
-                       self.displayText = timeline
+                       if let timestamp = timeline?.time {
+                           // `timestamp` is not nil here, so we can safely pass it
+                           let humanReadable = Utils.shared.timestampToHumanReadable(timestamp: timestamp)
+                           self.displayText = humanReadable + ""
+                       } else {
+                           // Handle the nil case, maybe provide a default value or do something else
+                           print("Timestamp is nil")
+                       }
                    }
                }
-           }
+       }
 
     func stopFetching() {
-        TimelineFetcher.shared.stopFetchingTimeline() // This method needs to be implemented in Kotlin
+        TimelineFetcher.shared.stopFetchingTimeline()
+    }
+    
+    
+    func startFetchingManifest() {
+        ExpMane
+               TimelineFetcher.shared.startFetchingTimeline { timeline in
+                   DispatchQueue.main.async {
+                       self.displayText =
+                   }
+               }
+       }
+
+    func stopFetchingManifest() {
+        TimelineFetcher.shared.stopFetchingTimeline()
     }
 }

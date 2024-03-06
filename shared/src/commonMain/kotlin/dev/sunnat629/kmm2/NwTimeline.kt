@@ -112,20 +112,3 @@ interface TimelineUpdateCallback {
     fun onUpdate(timeline: NwTimeline?)
 }
 
-fun timestampToHumanReadable(timestamp: Long): String {
-    // Create an Instant from the timestamp (milliseconds)
-    val instant = Instant.fromEpochMilliseconds(timestamp)
-
-    // Convert the Instant to LocalDateTime in the system's default time zone
-    val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-
-    // Format the LocalDateTime as a String (customize as needed)
-
-    return "${localDateTime.year}-${
-        localDateTime.monthNumber.toString().padStart(2, '0')
-    }-${localDateTime.dayOfMonth.toString().padStart(2, '0')} ${
-        localDateTime.hour.toString().padStart(2, '0')
-    }:${localDateTime.minute.toString().padStart(2, '0')}:${
-        localDateTime.second.toString().padStart(2, '0')
-    }"
-}
