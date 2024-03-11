@@ -13,6 +13,7 @@
 		3A8BAA2561C9A3AB2E4995F6 /* Pods_iosApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A6637108EBF5505C301E57 /* Pods_iosApp.framework */; };
 		7555FF83242A565900829871 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7555FF82242A565900829871 /* ContentView.swift */; };
 		845343EA2B92945600E9ED7F /* TimelineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 845343E92B92945600E9ED7F /* TimelineViewModel.swift */; };
+		D51153592B9F49EB000D22D2 /* Pods-iosApp.release.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 60C5D17A9D7C8968917391D3 /* Pods-iosApp.release.xcconfig */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -157,6 +158,7 @@
 			files = (
 				058557D9273AAEEB004C7B11 /* Preview Assets.xcassets in Resources */,
 				058557BB273AAA24004C7B11 /* Assets.xcassets in Resources */,
+				D51153592B9F49EB000D22D2 /* Pods-iosApp.release.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

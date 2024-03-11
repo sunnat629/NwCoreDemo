@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    namespace = "dev.sunnat629.kmm2.android"
+    namespace = "dev.sunnat629.nwCoreDemo.android"
     compileSdk = 34
     defaultConfig {
-        applicationId = "dev.sunnat629.kmm2.android"
+        applicationId = "dev.sunnat629.nwCoreDemo.android"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -39,7 +39,7 @@ android {
 }
 
 dependencies {
-    implementation(projects.shared)
+    implementation(projects.nwCoreDemo)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
     implementation(libs.compose.material3)

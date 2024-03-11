@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import shared
+import nwCoreDemo
 import Combine
 import SwiftUI
 
