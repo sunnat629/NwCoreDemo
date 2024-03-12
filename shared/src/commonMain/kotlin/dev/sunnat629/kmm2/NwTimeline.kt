@@ -8,17 +8,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.js.ExperimentalJsExport
@@ -40,12 +34,6 @@ data class NwTimeline(
 @JsExport
 object TimelineFetcher {
 
-    fun mohiCheck(): String? {
-        return "fgsdfgsdfgfdsggfdsfdgfdså‚"
-    }
-
-    val sunnat: String = "I am Mohi Us Sunnat"
-
     private var httpClient: HttpClient? = null
 
     private suspend fun fetchNwTimeline(): NwTimeline? {
@@ -56,6 +44,7 @@ object TimelineFetcher {
     val timelineFlow = _timelineFlow.asSharedFlow()
     private val scope = CoroutineScope(Dispatchers.Default)
     private var fetchJob: Job? = null
+    private var timeJob: Job? = null
 
     private fun tickerFlow(delayMillis: Long) = flow {
         while (true) {

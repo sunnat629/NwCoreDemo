@@ -14,6 +14,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "KMM2"
+rootProject.name = "NwCoreDemo"
 include(":androidApp")
 include(":shared")
