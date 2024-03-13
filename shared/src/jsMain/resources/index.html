@@ -1,15 +1,43 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>JS Client</title>
+    <title>NwCore Demo</title>
+    <style>
+        /* Simple CSS to center the content */
+        .centered-content {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+    </style>
 </head>
-
-<body>
-<b>Nw Timeline</b>
-    <div id="timeline">Loading timeline...</div>
-    <div id="kotlinContent"></div> <!-- Placeholder for displaying content -->
-    <script src="shared.js"></script>
+    <body>
+    <div class="centered-content">
+        <div id="timeDisplay">Nw Timeline: Loading...</div>
+        <br>
+        <button id="button1">Start Fetching</button>
+        <button id="button2">Stop Fetching</button>
+        <br>
+        <br>
+        <label for="manifestInput">Enter EXP manifest ID: </label><input type="text" id="manifestInput" placeholder="manifest ID">
+        <button id="button3">Fetch Manifest</button>
+        <br>
+        <br>
+        <div id="manifestDisplay">EXP Name: Loading...</div>
+        <br>
+        <br>
+        <div id="npmLib1">arrayOf(1, 2, 3, 4, 5) is sorted: Loading...</div>
+        <br>
+        <br>
+        <div id="npmLib2">arrayOf(1, 23, 4, 5) is sorted: Loading...</div>
+        <br>
+        <br>
+        <div id="permission">arrayOf(1, 23, 4, 5) is sorted: Loading...</div>
+    </div>
+        <script src="shared.js"></script>
+        <script src="mainN.js"></script>
 
 </body>
 </html>

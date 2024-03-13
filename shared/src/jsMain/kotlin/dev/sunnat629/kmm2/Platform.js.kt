@@ -1,20 +1,12 @@
 package dev.sunnat629.kmm2
 
+import Utils.timestampToHumanReadable
 import kotlinx.browser.document
+import org.w3c.dom.HTMLInputElement
 
 fun main() {
-    TimelineFetcher.startFetchingTimeline { timeline ->
-        updateWebPageWithNewContent(timeline)
-    }
-}
-
-fun updateWebPageWithNewContent(content: String) {
-    // Implement the logic to update your web page with the new content.
-    // This could involve manipulating the DOM to display the new timeline content.
-    println("New timeline content: $content")
-    // For example, if you have a <div id="timeline"> in your HTML:
-    val timelineElement = document.getElementById("timeline")
-    timelineElement?.textContent = content
+//    console.log(sorted(arrayOf(1,2,3)))
+        updateUI()
 }
 
 class JsPlatform: Platform {
@@ -22,12 +14,3 @@ class JsPlatform: Platform {
 }
 
 actual fun getPlatform(): Platform = JsPlatform()
-
-@OptIn(ExperimentalJsExport::class)
-@JsExport
-object Something {
-
-    fun somethingString(): String {
-        return "NW TIMELINE"
-    }
-}

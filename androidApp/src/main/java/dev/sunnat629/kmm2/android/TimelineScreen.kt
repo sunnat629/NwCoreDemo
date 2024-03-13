@@ -1,11 +1,8 @@
 package dev.sunnat629.kmm2.android
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults.buttonColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,33 +14,47 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun TimelineScreen(viewModel: MainViewModel) {
     // Assuming displayText is an observable state in ViewModel
-    val displayText = viewModel.displayText.collectAsState()
+    val timeDisplay = viewModel.timeDisplay.collectAsState()
+    val manifestDisplay = viewModel.manifestDisplay.collectAsState()
 
     Column(
         modifier = Modifier.padding(16.dp),
         verticalArrangement= Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = displayText.value, modifier = Modifier.padding(bottom = 8.dp))
-
+        Text(text = timeDisplay.value, modifier = Modifier.padding(bottom = 8.dp))
         Row(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Button(
                 onClick = { viewModel.startFetching() },
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(8.dp),
+                colors = buttonColors(containerColor = Color(0xFF3DDC84), contentColor = Color.White,)
             ) {
-                Text("Start", color = Color.Green)
+                Text("Start Fetching", color = Color.White)
             }
 
             Button(
                 onClick = { viewModel.stopFetching() },
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(8.dp),
+                colors = buttonColors(containerColor = Color.Red,contentColor = Color.White,)
             ) {
-                Text("Stop", color = Color.Red)
+                Text("Stop Fetching", color = Color.White)
             }
+        }
+        Spacer(Modifier.heightIn(20.dp))
+
+        Text(text = manifestDisplay.value, modifier = Modifier.padding(bottom = 8.dp))
+
+        Button(
+            onClick = { viewModel.startFetchingManifest() },
+            modifier = Modifier
+                .padding(8.dp),
+            colors = buttonColors(containerColor = Color(0xFF3DDC84),contentColor = Color.White,)
+        ) {
+            Text("Fetch Manifest", color = Color.White)
         }
     }
 }

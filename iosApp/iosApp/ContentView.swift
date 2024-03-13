@@ -2,6 +2,18 @@ import SwiftUI
 import shared
 
 struct ContentView: View {
+    @State private var permissionStatus: String = "Requesting Microphone Permission..."
+
+    func askForMicrophonePermission() {
+        Permissions.shared.askForMicrophonePermission { granted in
+            if granted.boolValue {
+                permissionStatus = "Microphone permission granted"
+            } else {
+                permissionStatus = "Microphone permission denied"
+            }
+        }
+    }
+    
 	let greet = Greeting().greet()
     @StateObject private var viewModel = TimelineViewModel()
 
@@ -14,11 +26,22 @@ struct ContentView: View {
      }
 
     var body: some View {
-            VStack {
-                Text(viewModel.displayText)
+        VStack(spacing: 20) {
+            Text(permissionStatus)
+            .padding()
+            Button("Request Permission") {
+                askForMicrophonePermission()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            
+            
+            Text(viewModel.timeDisplay)
                 
                 HStack {
-                    Button("Start") {
+                    Button("Start Fetching") {
                         viewModel.startFetching()
                     }
                     .padding()
@@ -26,7 +49,7 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                     
-                    Button("Stop") {
+                    Button("Stop Fetching") {
                         viewModel.stopFetching()
                     }
                     .padding()
@@ -34,6 +57,17 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
+                
+                Text(viewModel.manifestDisplay)
+                
+                Button("Fetch Manifest") {
+                    viewModel.startFetchingManifest()
+                }
+                .padding()
+                .background(Color.green)
+                .foregroundColor(.white)
+                .cornerRadius(10)
+                
             }
             .padding()
         }

@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDceDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 plugins {
@@ -16,8 +17,6 @@ kotlin {
         }
     }
 
-    iosX64()
-    iosArm64()
     iosSimulatorArm64()
 
     cocoapods {
@@ -32,23 +31,30 @@ kotlin {
         }
     }
 
-    js() {
+    js(IR) {
         moduleName = "shared"
         browser {
             webpackTask {
+                output.libraryTarget = "commonjs2"
+                // Enables DCE (Dead Code Elimination)
+                @OptIn(ExperimentalDceDsl::class)
+                dceTask {
+                    dceOptions.devMode = true
+                }
+            }
+            useCommonJs()
+            commonWebpackConfig {
+                outputFileName = "shared.js"
+                output?.library = "SharedAppModule"
             }
             testTask {
                 useKarma {
-                    useSafari()
-                    useFirefox()
-                    useChrome()
-                    useChromeCanary()
                     useChromeHeadless()
                     webpackConfig.cssSupport { enabled.set(true) }
                 }
             }
+            binaries.executable()
         }
-        binaries.executable()
     }
 
     sourceSets {
@@ -76,8 +82,16 @@ kotlin {
             implementation(kotlin("stdlib-js"))
             implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.0")
             implementation(libs.ktor.client.js)
+
+            implementation(npm("is-sorted", "1.0.5"))        // NPM library
         }
     }
+}
+
+tasks.register<Copy>("copyKotlinJsToWeb") {
+    from("$buildDir/processedResources/js/main/")
+    into("src/jsMain/resources")
+    include("*.js")
 }
 
 android {

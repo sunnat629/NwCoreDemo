@@ -8,17 +8,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.NonCancellable.isActive
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.cancellable
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.datetime.Instant
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlin.js.ExperimentalJsExport
@@ -40,22 +34,17 @@ data class NwTimeline(
 @JsExport
 object TimelineFetcher {
 
-    fun mohiCheck(): String? {
-        return "fgsdfgsdfgfdsggfdsfdgfdså‚"
-    }
-
-    val sunnat: String = "I am Mohi Us Sunnat"
-
     private var httpClient: HttpClient? = null
 
     private suspend fun fetchNwTimeline(): NwTimeline? {
         return httpClient?.get("https://time.api.nativewaves.com/")?.body<NwTimeline>()
     }
 
-    private val _timelineFlow = MutableSharedFlow<String>()
+    private val _timelineFlow = MutableSharedFlow<NwTimeline>()
     val timelineFlow = _timelineFlow.asSharedFlow()
     private val scope = CoroutineScope(Dispatchers.Default)
     private var fetchJob: Job? = null
+    private var timeJob: Job? = null
 
     private fun tickerFlow(delayMillis: Long) = flow {
         while (true) {
@@ -66,9 +55,9 @@ object TimelineFetcher {
 
 
     // Assuming this is defined in your Kotlin Multiplatform project
-    fun startFetchingTimeline(onUpdate: (String) -> Unit) {
+    fun startFetchingTimeline(onUpdate: (NwTimeline?) -> Unit) {
         val callback = object : TimelineUpdateCallback {
-            override fun onUpdate(timeline: String) {
+            override fun onUpdate(timeline: NwTimeline?) {
                 onUpdate(timeline)
             }
         }
@@ -88,12 +77,11 @@ object TimelineFetcher {
 
         fetchJob?.cancel()
         fetchJob = scope.launch {
-            tickerFlow(5000L).collect { _ ->
+            tickerFlow(3000L).collect { _ ->
                 try {
                     val result = fetchNwTimeline() // Simulate fetching timeline
-                    val timeline = result?.time?.let { timestampToHumanReadable(it) }?: throw Exception("NO RESULT")
-                    _timelineFlow.emit(timeline) // Emit the timeline to the SharedFlow
-                    callback.onUpdate(timeline) // Notify Swift through the callback
+                    result?.let { _timelineFlow.emit(it) } // Emit the timeline to the SharedFlow
+                    callback.onUpdate(result) // Notify Swift through the callback
                 } catch (e: Throwable) {
                     println("Error fetching timeline: ${e.message}")
                 }
@@ -110,23 +98,6 @@ object TimelineFetcher {
 }
 
 interface TimelineUpdateCallback {
-    fun onUpdate(timeline: String)
+    fun onUpdate(timeline: NwTimeline?)
 }
 
-fun timestampToHumanReadable(timestamp: Long): String {
-    // Create an Instant from the timestamp (milliseconds)
-    val instant = Instant.fromEpochMilliseconds(timestamp)
-
-    // Convert the Instant to LocalDateTime in the system's default time zone
-    val localDateTime = instant.toLocalDateTime(TimeZone.currentSystemDefault())
-
-    // Format the LocalDateTime as a String (customize as needed)
-
-    return "${localDateTime.year}-${
-        localDateTime.monthNumber.toString().padStart(2, '0')
-    }-${localDateTime.dayOfMonth.toString().padStart(2, '0')} ${
-        localDateTime.hour.toString().padStart(2, '0')
-    }:${localDateTime.minute.toString().padStart(2, '0')}:${
-        localDateTime.second.toString().padStart(2, '0')
-    }"
-}
