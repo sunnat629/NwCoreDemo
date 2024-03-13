@@ -2,9 +2,21 @@ package dev.sunnat629.kmm2
 
 import kotlinx.browser.document
 import Utils.timestampToHumanReadable
+import kotlinx.browser.window
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.mediacapture.MediaStreamConstraints
 
 internal fun updateUI() {
+
+    val constraints = MediaStreamConstraints(audio = true)
+
+    window.navigator.mediaDevices?.getUserMedia(constraints)?.then { stream ->
+        updateWebPageWithNewContent("permission", "Microphone access granted")
+    // You can now use the stream for your purposes
+    }?.catch { error ->
+        updateWebPageWithNewContent("permission", "Microphone access denied.")
+    }
+
     document.getElementById("button1")?.addEventListener("click", {
         // Example of asynchronous operation, you might want to fetch data from an API
         TimelineFetcher.startFetchingTimeline { nwTimeline ->

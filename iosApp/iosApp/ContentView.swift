@@ -2,6 +2,18 @@ import SwiftUI
 import shared
 
 struct ContentView: View {
+    @State private var permissionStatus: String = "Requesting Microphone Permission..."
+
+    func askForMicrophonePermission() {
+        Permissions.shared.askForMicrophonePermission { granted in
+            if granted.boolValue {
+                permissionStatus = "Microphone permission granted"
+            } else {
+                permissionStatus = "Microphone permission denied"
+            }
+        }
+    }
+    
 	let greet = Greeting().greet()
     @StateObject private var viewModel = TimelineViewModel()
 
@@ -15,7 +27,18 @@ struct ContentView: View {
 
     var body: some View {
         VStack(spacing: 20) {
-                Text(viewModel.timeDisplay)
+            Text(permissionStatus)
+            .padding()
+            Button("Request Permission") {
+                askForMicrophonePermission()
+            }
+            .padding()
+            .background(Color.blue)
+            .foregroundColor(.white)
+            .cornerRadius(10)
+            
+            
+            Text(viewModel.timeDisplay)
                 
                 HStack {
                     Button("Start Fetching") {

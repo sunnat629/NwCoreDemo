@@ -50,7 +50,9 @@ class TimelineViewModel: ObservableObject {
     }
 
     func stopFetchingManifest() {
+        DispatchQueue.main.async {
+            self.timeDisplay = "Stopped Fetching"
+        }
         TimelineFetcher.shared.stopFetchingTimeline()
-        self.timeDisplay = "Stopped Fetching"
     }
 }
