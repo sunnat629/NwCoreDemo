@@ -4,7 +4,6 @@ import platform.AVFAudio.AVAudioSession
 import platform.AVFAudio.AVAudioSessionRecordPermissionDenied
 import platform.AVFAudio.AVAudioSessionRecordPermissionGranted
 import platform.AVFAudio.AVAudioSessionRecordPermissionUndetermined
-import platform.AVFoundation.*
 import platform.UIKit.UIDevice
 
 class IOSPlatform: Platform {

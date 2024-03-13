@@ -53,7 +53,6 @@ object TimelineFetcher {
         }
     }
 
-
     // Assuming this is defined in your Kotlin Multiplatform project
     fun startFetchingTimeline(onUpdate: (NwTimeline?) -> Unit) {
         val callback = object : TimelineUpdateCallback {
@@ -77,7 +76,7 @@ object TimelineFetcher {
 
         fetchJob?.cancel()
         fetchJob = scope.launch {
-            tickerFlow(3000L).collect { _ ->
+            tickerFlow(2000L).collect { _ ->
                 try {
                     val result = fetchNwTimeline() // Simulate fetching timeline
                     result?.let { _timelineFlow.emit(it) } // Emit the timeline to the SharedFlow
