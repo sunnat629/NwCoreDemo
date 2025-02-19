@@ -1,7 +1,7 @@
 package dev.sunnat629.kmm2
 
-import kotlinx.browser.document
 import Utils.timestampToHumanReadable
+import kotlinx.browser.document
 import kotlinx.browser.window
 import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.mediacapture.MediaStreamConstraints
@@ -10,9 +10,9 @@ internal fun updateUI() {
 
     val constraints = MediaStreamConstraints(audio = true)
 
-    window.navigator.mediaDevices?.getUserMedia(constraints)?.then { stream ->
+    window.navigator.mediaDevices.getUserMedia(constraints)?.then { stream ->
         updateWebPageWithNewContent("permission", "Microphone access granted")
-    // You can now use the stream for your purposes
+        // You can now use the stream for your purposes
     }?.catch { error ->
         updateWebPageWithNewContent("permission", "Microphone access denied.")
     }
@@ -46,7 +46,7 @@ internal fun updateUI() {
             }
         }
     })
-    
+
     npmLibCheck()
 }
 

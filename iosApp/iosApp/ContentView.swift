@@ -13,14 +13,14 @@ struct ContentView: View {
             }
         }
     }
-    
+
 	let greet = Greeting().greet()
     @StateObject private var viewModel = TimelineViewModel()
 
     func sumOperations() -> Int {
         return Int(MathOperations().add(a: 5, b: 3))
      }
-    
+
     func subOperations() -> Int {
         return Int(MathOperations().sub(a: 5, b: 3))
      }
@@ -36,10 +36,10 @@ struct ContentView: View {
             .background(Color.blue)
             .foregroundColor(.white)
             .cornerRadius(10)
-            
-            
+
+
             Text(viewModel.timeDisplay)
-                
+
                 HStack {
                     Button("Start Fetching") {
                         viewModel.startFetching()
@@ -48,7 +48,7 @@ struct ContentView: View {
                     .background(Color.green)
                     .foregroundColor(.white)
                     .cornerRadius(10)
-                    
+
                     Button("Stop Fetching") {
                         viewModel.stopFetching()
                     }
@@ -57,9 +57,9 @@ struct ContentView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
                 }
-                
+
                 Text(viewModel.manifestDisplay)
-                
+
                 Button("Fetch Manifest") {
                     viewModel.startFetchingManifest()
                 }
@@ -67,7 +67,7 @@ struct ContentView: View {
                 .background(Color.green)
                 .foregroundColor(.white)
                 .cornerRadius(10)
-                
+
             }
             .padding()
         }

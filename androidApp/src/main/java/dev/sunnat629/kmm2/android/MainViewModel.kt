@@ -1,8 +1,6 @@
 package dev.sunnat629.kmm2.android
 
 import Utils
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.sunnat629.kmm2.ExpManifestFetcher
