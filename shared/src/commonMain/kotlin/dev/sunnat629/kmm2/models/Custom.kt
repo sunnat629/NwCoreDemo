@@ -1,10 +1,9 @@
 package dev.sunnat629.kmm2.models
 
 
-
 import kotlinx.serialization.SerialName
-import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonObject
 
 @Serializable
 data class ExpManifestExtensions(

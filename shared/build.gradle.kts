@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalDceDsl
 import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
@@ -5,15 +6,13 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.kotlinCocoapods)
     alias(libs.plugins.androidLibrary)
-    kotlin("plugin.serialization") version "1.9.20"
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
     androidTarget {
-        compilations.all {
-            kotlinOptions {
-                jvmTarget = "1.8"
-            }
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
         }
     }
 
@@ -31,16 +30,16 @@ kotlin {
         }
     }
 
-    js(IR) {
+    js() {
         moduleName = "shared"
         browser {
             webpackTask {
                 output.libraryTarget = "commonjs2"
                 // Enables DCE (Dead Code Elimination)
-                @OptIn(ExperimentalDceDsl::class)
-                dceTask {
-                    dceOptions.devMode = true
-                }
+//                @OptIn(ExperimentalDceDsl::class)
+//                dceTask {
+//                    dceOptions.devMode = true
+//                }
             }
             useCommonJs()
             commonWebpackConfig {
@@ -66,8 +65,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
 //            api("dev.icerock.moko:mvvm-core:0.16.1") // only ViewModel, EventsDispatcher, Dispatchers.UI
 //            api("dev.icerock.moko:mvvm-compose:0.16.1") // api mvvm-core, getViewModel for Compose Multiplatform
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.6.0-RC.2")
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.datetime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -78,9 +77,9 @@ kotlin {
         }
 
         jsMain.dependencies {
-            implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.11.0")
+            implementation(libs.kotlinx.html.js)
             implementation(kotlin("stdlib-js"))
-            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-js:1.8.0")
+            implementation(libs.kotlinx.coroutines.core.js)
             implementation(libs.ktor.client.js)
 
             implementation(npm("is-sorted", "1.0.5"))        // NPM library
@@ -96,12 +95,13 @@ tasks.register<Copy>("copyKotlinJsToWeb") {
 
 android {
     namespace = "dev.sunnat629.kmm2"
-    compileSdk = 34
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
+
     defaultConfig {
-        minSdk = 24
+        minSdk = libs.versions.android.minSdk.get().toInt()
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }

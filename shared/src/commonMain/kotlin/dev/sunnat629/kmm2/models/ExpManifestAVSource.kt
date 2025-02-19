@@ -34,16 +34,22 @@ data class ExpManifestAVSource(
 enum class ExpManifestSourceType {
     @SerialName("Hls")
     HLS,
+
     @SerialName("Dash")
     DASH,
+
     @SerialName("Mp4")
     MP4,
+
     @SerialName("Hesp")
     HESP,
+
     @SerialName("Millicast")
     MILLICAST,
+
     @SerialName("Whep")
     WHEP,
+
     @SerialName("NWThumbnail")
     NWTHUMBNAIL
 }
@@ -105,6 +111,7 @@ object ExpManifestSourceTypeSerializer : KSerializer<ExpManifestSourceType> {
     override fun serialize(encoder: Encoder, value: ExpManifestSourceType) {
         encoder.encodeString(value.toString().lowercase())
     }
+
     override fun deserialize(decoder: Decoder): ExpManifestSourceType {
         // Admittedly, this would accept "Error" in addition to "error".
         return ExpManifestSourceType.valueOf(decoder.decodeString().uppercase())

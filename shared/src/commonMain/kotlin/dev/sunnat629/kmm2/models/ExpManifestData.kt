@@ -45,12 +45,12 @@ data class ExpManifestData(
 )
 
 @Serializable
-data class ExpManifestVideoQuality (
+data class ExpManifestVideoQuality(
     @SerialName("levels")
     val levels: List<ExpManifestVideoQualityLevel>? = null,
     @SerialName("minLevelId")
     val minLevelId: String? = null
-    ) {
+) {
 
     @Serializable
     data class ExpManifestVideoQualityLevel(
@@ -63,12 +63,12 @@ data class ExpManifestVideoQuality (
         @SerialName("tags")
         val tags: List<String>? = null,
 
-    )
+        )
 }
 
 
 @Serializable
-data class LocalizedString (
+data class LocalizedString(
     @SerialName("locales")
     val locales: List<String>? = null,
     @SerialName("value")

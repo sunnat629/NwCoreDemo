@@ -18,7 +18,7 @@ data class ExpManifestGlobalAudioTrack(
     val audioObject: List<ExpManifestAVObject>? = null,
     @SerialName("unavailabilities")
     val unavailabilities: List<ExpManifestUnavailability>? = null,
-): ExpManifestTrack() {
+) : ExpManifestTrack() {
     override val type: TrackType = TrackType.GLOBAL_AUDIO
 }
 
@@ -34,7 +34,7 @@ data class ExpManifestAudioTrack(
     val audios: List<ExpManifestAVObject>? = null,
     @SerialName("unavailabilities")
     val unavailabilities: List<ExpManifestUnavailability>? = null,
-): ExpManifestTrack() {
+) : ExpManifestTrack() {
     override val type: TrackType = TrackType.AUDIO
 }
 

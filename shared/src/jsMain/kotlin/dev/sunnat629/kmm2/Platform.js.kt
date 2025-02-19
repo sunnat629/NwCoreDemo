@@ -1,15 +1,12 @@
 package dev.sunnat629.kmm2
 
-import Utils.timestampToHumanReadable
-import kotlinx.browser.document
-import org.w3c.dom.HTMLInputElement
-
 fun main() {
 //    console.log(sorted(arrayOf(1,2,3)))
-        updateUI()
+    updateUI()
 }
 
-class JsPlatform: Platform {
+//p78x44cv1rrm23lx
+class JsPlatform : Platform {
     override val name: String = "Web with Kotlin/JS"
 }
 

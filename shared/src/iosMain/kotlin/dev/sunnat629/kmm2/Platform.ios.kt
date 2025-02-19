@@ -4,10 +4,9 @@ import platform.AVFAudio.AVAudioSession
 import platform.AVFAudio.AVAudioSessionRecordPermissionDenied
 import platform.AVFAudio.AVAudioSessionRecordPermissionGranted
 import platform.AVFAudio.AVAudioSessionRecordPermissionUndetermined
-import platform.AVFoundation.*
 import platform.UIKit.UIDevice
 
-class IOSPlatform: Platform {
+class IOSPlatform : Platform {
     override val name: String = UIDevice.currentDevice.systemName() + " " + UIDevice.currentDevice.systemVersion
 }
 
@@ -21,15 +20,18 @@ object Permissions {
                 callback(true)
                 println("Microphone access already granted.")
             }
+
             AVAudioSessionRecordPermissionDenied -> {
                 callback(false)
                 println("Microphone access denied.")
             }
+
             AVAudioSessionRecordPermissionUndetermined -> {
                 session.requestRecordPermission { granted ->
                     callback(granted)
                 }
             }
+
             else -> println("Unknown microphone permission status.")
         }
     }
