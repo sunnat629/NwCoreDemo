@@ -56,10 +56,10 @@ private fun npmLibCheck() {
 }
 
 fun updateWebPageWithNewContent(elementId: String, content: String) {
+    println("New content: $content")
     // Implement the logic to update your web page with the new content.
     // This could involve manipulating the DOM to display the new timeline content.
-    println("New timeline content: $content")
     // For example, if you have a <div id="timeline"> in your HTML:
-    val timelineElement = document.getElementById(elementId)
-    timelineElement?.textContent = content
+    val element = document.getElementById(elementId)
+    element?.textContent = content
 }
