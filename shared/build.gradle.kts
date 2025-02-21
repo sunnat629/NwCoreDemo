@@ -30,17 +30,13 @@ kotlin {
         }
     }
 
-    js() {
+    js {
         moduleName = "shared"
         browser {
             webpackTask {
-                output.libraryTarget = "commonjs2"
-                // Enables DCE (Dead Code Elimination)
-//                @OptIn(ExperimentalDceDsl::class)
-//                dceTask {
-//                    dceOptions.devMode = true
-//                }
+                output.libraryTarget = "umd"
             }
+
             useCommonJs()
             commonWebpackConfig {
                 outputFileName = "shared.js"
